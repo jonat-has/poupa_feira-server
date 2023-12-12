@@ -4,8 +4,9 @@ import { Mercados } from '../models/Mercados.entity';
 
 export default {
   async mercadosComProdutos(req: Request, res: Response) {
+
     try {
-      const produtos = ['Suco de Laranja','Filé de Frango'];
+      const { produtos } = req.body;
 
       const mercadosComConjuntoEspecifico = await AppDataSource
         .getRepository(Mercados)
@@ -21,7 +22,7 @@ export default {
           'produto.id_produto',
           'produto.img_produto'
         ])
-        .where('produto.nome_produto IN (:...produtos)', { produtos })
+        .where('precos.produtoIdProduto IN (:...produtos)', { produtos })
         .getMany();
 
         const mercadoProdutosFormatado = mercadosComConjuntoEspecifico.map((mercado) => {
@@ -41,7 +42,6 @@ export default {
           };
         });
         
-        console.log(mercadoProdutosFormatado);
         res.status(200).json(mercadoProdutosFormatado);        
     } catch (error) {
       console.error(error);

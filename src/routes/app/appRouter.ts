@@ -10,5 +10,5 @@ appRoutes.get('/categorias/:id', categoriasController.getAllCategorias);
 // Rota para buscar todos os produtos
 appRoutes.get('/produtos/:id', produtosController.getAllProdutos);
 // Rota para buscar todos os mercados com um conjunto de produtos especifico
-appRoutes.get('/mercadosComProdutos', mercadosController.mercadosComProdutos);
+appRoutes.post('/mercadosEncontrados', mercadosController.mercadosComProdutos)
 export default appRoutes;
