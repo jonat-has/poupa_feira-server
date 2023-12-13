@@ -4,12 +4,9 @@ import authToken from '../../middlewares/authToken';
 
 const userRoutes = Router();
 
-userRoutes.get('/auth/user', userController.getAllUser)
-
-userRoutes.get('/auth/user/:id', authToken,userController.getOneById)
-
 userRoutes.post('/auth/register', userController.registerUser)
 
 userRoutes.post('/auth/login', userController.loginUser)
 
+userRoutes.post('/auth/recover', userController.recoverUserInfo)
 export default userRoutes;

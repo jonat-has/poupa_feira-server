@@ -6,33 +6,6 @@ import JsonWebToken from 'jsonwebtoken'
 
 export default {
 
-    async getAllUser(req: Request, res: Response) {
-        const user = await AppDataSource
-        .getRepository(User)
-        .manager
-        .find(User)
-
-        console.log(user)
-        res.send(user)
-    },
-    
-    async getOneById(req: Request, res: Response) {
-        const id = parseInt(req.params.id);
-      
-        try {
-          const user = await AppDataSource.getRepository(User).findOneBy( { id: id });
-      
-          if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado.' });
-          }
-      
-          return res.status(200).json(user);
-        } catch (error) {
-          console.error('Erro ao buscar usuário por ID:', error);
-          return res.status(500).json({ message: 'Ocorreu um erro ao buscar o usuário.', error });
-        }
-      },
-
     async registerUser(req: Request, res: Response) {
         const { nome, email, senha } = req.body;
 
@@ -49,7 +22,7 @@ export default {
              );
 
           if (existingUser) {
-            return res.status(400).json({ message: 'O email já está em uso.' });
+            return res.status(400).json({ Errormessage: 'O email já está em uso.' });
           }
 
           const salt = bcrypt.genSaltSync(10)
@@ -100,10 +73,49 @@ export default {
             },
            secret);
       
-          return res.status(200).json({ message: 'Login bem-sucedido!', token });
+          const userInf = {
+            nome: user.nome,
+            email: user.email
+          }
+
+          return res.status(200).json({ message: 'Login bem-sucedido!', token, userInf });
         } catch (error) {
           console.error('Erro ao realizar o login:', error);
           return res.status(500).json({ message: 'Ocorreu um erro ao realizar o login.', error });
         }
+    },
+
+    async recoverUserInfo(req: Request, res: Response) {
+      try {
+        const token = req.headers.authorization.split(' ')[1]; // Obtenha o token do cabeçalho Authorization
+    
+        interface JwtPayload {
+          id: number;
+        }
+
+        const secret = process.env.SECRET;
+    
+        // Verifique e decodifique o token
+        const decodedToken = JsonWebToken.verify(token, secret) as JwtPayload;
+    
+        const { id } = decodedToken;
+        
+        const user = await AppDataSource.getRepository(User).findOne({ where: { id:  id} });
+    
+        if (!user) {
+          return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+    
+        // Retorne as informações do usuário
+        const userInfo = {
+          nome: user.nome,
+          email: user.email
+        };
+    
+        res.json(userInfo);
+      } catch (error) {
+        console.error('Erro ao buscar informações do usuário', error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+      }
     }
 }
