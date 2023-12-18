@@ -18,6 +18,9 @@ export class Mercados {
 
   @OneToMany(() => Precos, preco => preco.mercado)
   precos: Precos[];
+
+  @Column({length: 255, nullable: true})
+  info: string;
 }
 
 

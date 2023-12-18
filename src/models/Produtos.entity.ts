@@ -19,6 +19,10 @@ export class Produtos {
 
   @OneToMany(() => Precos, preco => preco.produto)
   precos: Precos[];
+
+  @Column({ length: 255, nullable: false })
+  medida: string;
+
 }
 
 /*
@@ -29,4 +33,5 @@ id_produto int PK
 nome_produto varchar(255) 
 id_categoria int 
 img_produto varchar(255)
+medida varchar(255)
 */
