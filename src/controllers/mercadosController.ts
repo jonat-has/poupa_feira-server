@@ -16,6 +16,10 @@ export default {
         .select([
           'mercado.id_mercado',
           'mercado.nome_mercado',
+          'mercado.img_mercado',
+          'mercado.info',
+          'mercado.tele',
+          'mercado.endereco',
           'produto.nome_produto',
           'precos.preco',
           'mercado.localizacao',
@@ -26,21 +30,25 @@ export default {
         .getMany();
 
         const mercadoProdutosFormatado = mercadosComConjuntoEspecifico.map((mercado) => {
-          const { id_mercado, nome_mercado, localizacao, precos } = mercado;
+          const { id_mercado, nome_mercado, localizacao, precos, img_mercado , info, tele, endereco } = mercado;
           const produtos = precos.map((preco) => ({
             id_produto: preco.produto.id_produto,
-            nome_produto: preco.produto.nome_produto,
             preco: preco.preco,
-            img_produto: preco.produto.img_produto
           }));
         
           return {
             id_mercado,
             nome_mercado,
+            img_mercado,
+            info,
+            tele,
+            endereco,
             localizacao,
             produtos,
           };
         });
+        
+        console.log(mercadoProdutosFormatado)
         
         res.status(200).json(mercadoProdutosFormatado);        
     } catch (error) {

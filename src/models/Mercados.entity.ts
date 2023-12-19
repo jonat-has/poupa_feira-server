@@ -21,6 +21,12 @@ export class Mercados {
 
   @Column({length: 255, nullable: true})
   info: string;
+
+  @Column({length: 255, nullable: true})
+  tele: string;
+
+  @Column({length: 255, nullable: true})
+  endereco: string;
 }
 
 
