@@ -21,7 +21,7 @@ export default {
       .createQueryBuilder()
       .select('produtoIdProduto')
       .addSelect('ROUND(AVG(preco), 2)', 'avg_preco')
-      .from('poupa_feira.precos', 'precos')
+      .from('precos', 'precos')
       .groupBy('produtoIdProduto')
       .getRawMany();
         
