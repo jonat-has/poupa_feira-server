@@ -7,11 +7,11 @@ const { DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE } = process.env;
 
 export const AppDataSource = new DataSource({
     type: "mssql",
-    host: DB_HOST,
+    host: "poupa-feira.database.windows.net",
     port: 1433,
-    username: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_DATABASE,
+    username: "poupa_feira",
+    password: "jonathas2890@",
+    database: "Poupa_Feira-Database",
     synchronize: true,
     logging: false,
     
